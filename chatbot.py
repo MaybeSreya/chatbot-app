@@ -139,31 +139,30 @@ def send_chat_request(question):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Main bot loop
 def run_chat_bot():
-    print("Starting automated chat bot...")
-    available_questions = questions.copy()  # Work with a copy to preserve original list
+    print("Starting automated chat bot...\n")
+    round_counter = 1
     
-    for i in range(100):  # Fixed to 100 since we have exactly 100 questions
-        if not available_questions:
-            print("Ran out of questions unexpectedly!")
-            break
+    while True:
+        print(f"\n--- Round {round_counter} ---")
+        available_questions = questions.copy()
         
-        # Pick and remove a random question to avoid repetition
-        question = random.choice(available_questions)
-        available_questions.remove(question)
-        
-        # Send request and print results
-        print(f"\nQuestion {i + 1}: {question}")
-        answer = send_chat_request(question)
-        print(f"Answer: {answer}")
-        
-        # Random delay between 1-2 minutes (60-120 seconds)
-        delay = random.uniform(60, 120)
-        print(f"Waiting {delay:.1f} seconds before next question...")
-        time.sleep(delay)
-    
-    print("\nCompleted 100 questions!")
+        for i in range(100):
+            if not available_questions:
+                break
+            
+            question = random.choice(available_questions)
+            available_questions.remove(question)
+            
+            print(f"\nQuestion {i + 1}: {question}")
+            answer = send_chat_request(question)
+            print(f"Answer: {answer}")
+            
+            delay = random.uniform(60, 120)
+            print(f"Waiting {delay:.1f} seconds before next question...")
+            time.sleep(delay)
+
+        round_counter += 1
 
 # Run the bot
 if __name__ == "__main__":
